@@ -3,13 +3,19 @@ package com.example.testingapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import com.example.testingapp.ui.theme.TestingAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -17,30 +23,36 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             TestingAppTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
-                }
+                ButtonAdd(Color.Magenta)
             }
         }
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
+fun ButtonAdd(color: Color) {
+    Button(
+        onClick = { /*TODO*/ },
+        content = { ContentButton() },
+        modifier = Modifier
+            .semantics { testTagsAsResourceId = true }
+            .testTag("ButtonAdd"),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = color
+        )
     )
 }
 
-@Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
-    TestingAppTheme {
-        Greeting("Android")
-    }
+fun ContentButton() {
+    Text(
+        modifier = Modifier.testTag("TextAdd"),
+        text = "Add"
+    )
+    Icon(
+        modifier = Modifier.testTag("AddIcon"),
+        imageVector = Icons.Default.Add,
+        contentDescription = "Add Icon"
+    )
 }
